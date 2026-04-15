@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>For Florence ❤️ | A Special Video Message</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Playfair+Display:wght@400;700&family=Quicksand:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Playfair Display', serif;
+            color: #fff;
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background: #0a0a0a;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 30%, rgba(255, 107, 139, 0.15), transparent 60%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            padding: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .video-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        .title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #ff6b8b, #ff8ba0, #ff6b8b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-style: italic;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .heart-icon {
+            font-size: 2rem;
+            color: #ff6b8b;
+            margin: 0.8rem 0;
+            animation: heartbeat 2s infinite;
+        }
+
+        .person-name {
+            background: linear-gradient(135deg, #ff8ba0, #ff6b8b);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.2em;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(255, 107, 139, 0.15);
+            border: 2px solid rgba(255, 107, 139, 0.2);
+        }
+
+        .video-player {
+            width: 100%;
+            height: auto;
+            display: block;
+            background: #000;
+        }
+
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.75);
+            transition: opacity 0.5s ease;
+            border-radius: 20px;
+        }
+
+        .video-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .overlay-content {
+            text-align: center;
+            padding: 2rem;
+            max-width: 500px;
+        }
+
+        .overlay-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.2rem;
+            color: #ff6b8b;
+            margin-bottom: 1rem;
+        }
+
+        .overlay-message {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .play-button {
+            background: linear-gradient(135deg, #ff6b8b, #ff4757);
+            border: none;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 30px rgba(255, 107, 139, 0.4);
+            animation: pulse 2s infinite;
+            margin: 0 auto;
+        }
+
+        .play-button:hover {
+            transform: scale(1.1);
+        }
+
+        .video-controls {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            flex-wrap: wrap;
+        }
+
+        .video-container:hover .video-controls {
+            opacity: 1;
+        }
+
+        .control-btn {
+            background: rgba(0, 0, 0, 0.6);
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .control-btn:hover {
+            background: #ff6b8b;
+            transform: scale(1.05);
+        }
+
+        .progress-container {
+            flex: 1;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 2px;
+            cursor: pointer;
+            min-width: 100px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6b8b, #ff4757);
+            width: 0%;
+            border-radius: 2px;
+        }
+
+        .time-display {
+            font-size: 0.8rem;
+            color: white;
+            min-width: 100px;
+            text-align: center;
+        }
+
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .volume-slider {
+            width: 80px;
+            -webkit-appearance: none;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 2px;
+        }
+
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ff6b8b;
+            cursor: pointer;
+        }
+
+        .video-stats {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1.5rem;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.85rem;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .stat-item i {
+            color: #ff6b8b;
+        }
+
+        .love-message {
+            text-align: center;
+            margin-top: 2.5rem;
+            padding: 1.5rem;
+            background: rgba(255, 107, 139, 0.1);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 107, 139, 0.2);
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .message-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.8rem;
+            color: #ff6b8b;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+        }
+
+        .message-text {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .navigation {
+            margin: 2rem 0 1rem;
+            text-align: center;
+        }
+
+        .page-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .page-link {
+            color: #ff8ba0;
+            text-decoration: none;
+            padding: 0.7rem 1.5rem;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: 1px solid rgba(255, 107, 139, 0.3);
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .page-link:hover {
+            background: rgba(255, 107, 139, 0.3);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .heart-btn {
+            background: linear-gradient(135deg, #ff6b8b, #ff4757) !important;
+            color: white !important;
+            border: none !important;
+        }
+
+        .floating-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .heart-float {
+            position: absolute;
+            font-size: 1.2rem;
+            animation: floatHeart 18s infinite linear;
+            opacity: 0.25;
+            color: #ff8ba0;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes floatHeart {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            15% { opacity: 0.3; }
+            85% { opacity: 0.3; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 1rem; }
+            .title { font-size: 2.5rem; }
+            .video-controls { padding: 0.8rem; gap: 0.6rem; }
+            .control-btn { width: 35px; height: 35px; font-size: 1rem; }
+            .volume-slider { width: 60px; }
+            .time-display { font-size: 0.7rem; min-width: 80px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="floating-hearts" id="floatingHearts"></div>
+
+<div class="container">
+    <div class="video-header">
+        <h1 class="title">Just for You <span class="person-name">Florence</span></h1>
+        <div class="heart-icon">
+            <i class="fas fa-heart"></i>
+        </div>
+        <p class="subtitle">A special video message that comes straight from the heart</p>
+    </div>
+
+    <div class="video-container" id="videoContainer">
+        <video class="video-player" id="mainVideo" preload="metadata">
+            <source src="BENSOUL - FORGET YOU (ACOUSTIC) SMS [Skiza 8549274] to 811.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+
+        <div class="video-overlay" id="videoOverlay">
+            <div class="overlay-content">
+                <h2 class="overlay-title">Ready to Watch?</h2>
+                <p class="overlay-message">
+                    This video was made especially for you, Florence. 
+                    It comes with all my love and appreciation for who you are.
+                </p>
+                <button class="play-button" id="playOverlayBtn">
+                    <i class="fas fa-play"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="video-controls" id="videoControls">
+            <button class="control-btn" id="playPauseBtn"><i class="fas fa-play"></i></button>
+            <button class="control-btn" id="rewindBtn"><i class="fas fa-backward"></i></button>
+            <button class="control-btn" id="forwardBtn"><i class="fas fa-forward"></i></button>
+            <div class="progress-container" id="progressContainer">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            <div class="time-display" id="timeDisplay">
+                <span id="currentTime">0:00</span> / <span id="duration">0:00</span>
+            </div>
+            <div class="volume-control">
+                <button class="control-btn" id="muteBtn"><i class="fas fa-volume-up"></i></button>
+                <input type="range" min="0" max="100" value="80" class="volume-slider" id="volumeSlider">
+            </div>
+            <button class="control-btn" id="fullscreenBtn"><i class="fas fa-expand"></i></button>
+        </div>
+    </div>
+
+    <div class="video-stats">
+        <div class="stat-item"><i class="fas fa-heart"></i><span>Made with Love</span></div>
+        <div class="stat-item"><i class="fas fa-clock"></i><span id="videoDuration">Loading...</span></div>
+        <div class="stat-item"><i class="fas fa-eye"></i><span>For your eyes only 💕</span></div>
+    </div>
+
+    <div class="love-message">
+        <h2 class="message-title">
+            <i class="fas fa-heart"></i>
+            A Personal Message
+            <i class="fas fa-heart"></i>
+        </h2>
+        <p class="message-text" id="dynamicMessage">
+            Florence, this video was created with you in mind. Every moment, every note — it's all for you.
+            You make the world brighter just by being in it.
+        </p>
+    </div>
+
+    <div class="navigation">
+        <div class="page-links">
+            <a href="index.html" class="page-link"><i class="fas fa-home"></i> Home</a>
+            <a href="qualities.html" class="page-link heart-btn"><i class="fas fa-heart"></i>Open me</a>
+            <a href="javascript:void(0);" class="page-link" onclick="history.back(); return false;">
+                <i class="fas fa-arrow-left"></i> Back
+            </a>        
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Set name to Florence
+        document.querySelectorAll('.person-name').forEach(el => {
+            el.textContent = 'Florence';
+        });
+
+        // DOM Elements
+        const video = document.getElementById('mainVideo');
+        const videoOverlay = document.getElementById('videoOverlay');
+        const playOverlayBtn = document.getElementById('playOverlayBtn');
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const rewindBtn = document.getElementById('rewindBtn');
+        const forwardBtn = document.getElementById('forwardBtn');
+        const progressBar = document.getElementById('progressBar');
+        const progressContainer = document.getElementById('progressContainer');
+        const currentTimeEl = document.getElementById('currentTime');
+        const durationEl = document.getElementById('duration');
+        const videoDurationEl = document.getElementById('videoDuration');
+        const muteBtn = document.getElementById('muteBtn');
+        const volumeSlider = document.getElementById('volumeSlider');
+        const fullscreenBtn = document.getElementById('fullscreenBtn');
+        const dynamicMessage = document.getElementById('dynamicMessage');
+
+        let isPlaying = false;
+        let firstPlay = true;
+
+        // Format time
+        function formatTime(seconds) {
+            if (isNaN(seconds) || seconds === Infinity) return '0:00';
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        // Update progress
+        function updateProgress() {
+            if (video.duration && !isNaN(video.duration)) {
+                const progress = (video.currentTime / video.duration) * 100;
+                progressBar.style.width = `${progress}%`;
+                currentTimeEl.textContent = formatTime(video.currentTime);
+            }
+        }
+
+        // Set duration
+        function setDuration() {
+            if (video.duration && !isNaN(video.duration)) {
+                durationEl.textContent = formatTime(video.duration);
+                videoDurationEl.textContent = `${Math.floor(video.duration / 60)} min ${Math.floor(video.duration % 60)} sec`;
+            } else {
+                durationEl.textContent = '0:00';
+                videoDurationEl.textContent = 'Loading...';
+            }
+        }
+
+        // Play/Pause
+        function togglePlayPause() {
+            if (video.paused) {
+                video.play();
+                playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                isPlaying = true;
+
+                if (firstPlay && videoOverlay) {
+                    videoOverlay.classList.add('hidden');
+                    firstPlay = false;
+                    dynamicMessage.innerHTML = `Florence, thank you for watching. You are truly special — never forget how amazing you are. 💖`;
+                }
+            } else {
+                video.pause();
+                playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+                isPlaying = false;
+            }
+        }
+
+        // Skip forward/backward
+        function skipForward() {
+            if (video.duration) video.currentTime = Math.min(video.currentTime + 10, video.duration);
+        }
+
+        function skipBackward() {
+            video.currentTime = Math.max(video.currentTime - 10, 0);
+        }
+
+        // Progress bar click
+        function setProgress(e) {
+            const rect = progressContainer.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const width = rect.width;
+            if (video.duration) {
+                video.currentTime = (clickX / width) * video.duration;
+            }
+        }
+
+        // Mute/Volume
+        function toggleMute() {
+            video.muted = !video.muted;
+            muteBtn.innerHTML = video.muted ? '<i class="fas fa-volume-mute"></i>' : '<i class="fas fa-volume-up"></i>';
+            if (!video.muted) volumeSlider.value = video.volume * 100;
+            else volumeSlider.value = 0;
+        }
+
+        function changeVolume() {
+            video.volume = volumeSlider.value / 100;
+            video.muted = video.volume === 0;
+            muteBtn.innerHTML = video.volume === 0 ? '<i class="fas fa-volume-mute"></i>' : '<i class="fas fa-volume-up"></i>';
+        }
+
+        // Fullscreen
+        function toggleFullscreen() {
+            const container = document.getElementById('videoContainer');
+            if (!document.fullscreenElement) {
+                container.requestFullscreen().catch(err => console.log(err));
+                fullscreenBtn.innerHTML = '<i class="fas fa-compress"></i>';
+            } else {
+                document.exitFullscreen();
+                fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i>';
+            }
+        }
+
+        document.addEventListener('fullscreenchange', () => {
+            if (document.fullscreenElement) fullscreenBtn.innerHTML = '<i class="fas fa-compress"></i>';
+            else fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i>';
+        });
+
+        // Floating hearts
+        function createFloatingHearts() {
+            const container = document.getElementById('floatingHearts');
+            const icons = ['❤️', '💖', '💗', '🌸', '🌹', '✨', '💕'];
+            for (let i = 0; i < 25; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart-float';
+                heart.innerHTML = icons[Math.floor(Math.random() * icons.length)];
+                heart.style.left = `${Math.random() * 100}%`;
+                heart.style.fontSize = `${0.8 + Math.random() * 1.2}rem`;
+                heart.style.animationDuration = `${12 + Math.random() * 18}s`;
+                heart.style.animationDelay = `${Math.random() * 10}s`;
+                heart.style.opacity = `${0.15 + Math.random() * 0.25}`;
+                container.appendChild(heart);
+                setTimeout(() => heart.remove(), 25000);
+            }
+        }
+
+        // Heart click effect
+        function createHeartClick(e) {
+            const heart = document.createElement('div');
+            heart.innerHTML = '❤️';
+            heart.style.position = 'fixed';
+            heart.style.left = `${e.clientX}px`;
+            heart.style.top = `${e.clientY}px`;
+            heart.style.fontSize = '1.3rem';
+            heart.style.pointerEvents = 'none';
+            heart.style.zIndex = '9999';
+            heart.style.opacity = '0.7';
+            heart.style.transition = 'transform 1s ease, opacity 1s';
+            heart.style.transform = 'translateY(-20px) scale(1.1)';
+            document.body.appendChild(heart);
+            setTimeout(() => {
+                heart.style.opacity = '0';
+                setTimeout(() => heart.remove(), 800);
+            }, 50);
+        }
+
+        // Video end effect
+        function onVideoEnd() {
+            playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+            isPlaying = false;
+            dynamicMessage.innerHTML = `Thank you for watching, Florence! 💖<br><br>This video will always be here for you, just like my admiration for you.`;
+            // Heart explosion
+            for (let i = 0; i < 15; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.innerHTML = '💖';
+                    heart.style.position = 'fixed';
+                    heart.style.left = '50%';
+                    heart.style.top = '50%';
+                    heart.style.fontSize = '1.5rem';
+                    heart.style.pointerEvents = 'none';
+                    heart.style.zIndex = '9999';
+                    heart.style.transform = `translate(${Math.random() * 200 - 100}px, ${Math.random() * 100 - 50}px)`;
+                    heart.style.opacity = '0.8';
+                    heart.style.transition = 'all 1.5s ease-out';
+                    document.body.appendChild(heart);
+                    setTimeout(() => heart.remove(), 1500);
+                }, i * 80);
+            }
+        }
+
+        // Event Listeners
+        if (playOverlayBtn) {
+            playOverlayBtn.addEventListener('click', () => {
+                if (videoOverlay) videoOverlay.classList.add('hidden');
+                togglePlayPause();
+            });
+        }
+
+        playPauseBtn.addEventListener('click', togglePlayPause);
+        rewindBtn.addEventListener('click', skipBackward);
+        forwardBtn.addEventListener('click', skipForward);
+        progressContainer.addEventListener('click', setProgress);
+        muteBtn.addEventListener('click', toggleMute);
+        volumeSlider.addEventListener('input', changeVolume);
+        fullscreenBtn.addEventListener('click', toggleFullscreen);
+
+        video.addEventListener('loadedmetadata', () => {
+            setDuration();
+            updateProgress();
+        });
+        video.addEventListener('timeupdate', updateProgress);
+        video.addEventListener('play', () => { playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>'; isPlaying = true; });
+        video.addEventListener('pause', () => { playPauseBtn.innerHTML = '<i class="fas fa-play"></i>'; isPlaying = false; });
+        video.addEventListener('ended', onVideoEnd);
+        video.addEventListener('canplay', setDuration);
+
+        // Handle video loading errors
+        video.addEventListener('error', function(e) {
+            console.log("Video error:", e);
+            dynamicMessage.innerHTML = `💖 Florence, the video is ready when you are. This message comes from my heart — you are truly amazing. 💖`;
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.key === ' ' || e.key === 'Space') { e.preventDefault(); togglePlayPause(); }
+            else if (e.key === 'ArrowRight') { e.preventDefault(); skipForward(); }
+            else if (e.key === 'ArrowLeft') { e.preventDefault(); skipBackward(); }
+            else if (e.key === 'f' || e.key === 'F') { e.preventDefault(); toggleFullscreen(); }
+            else if (e.key === 'm' || e.key === 'M') { e.preventDefault(); toggleMute(); }
+        });
+
+        // Click effect
+        document.body.addEventListener('click', (e) => {
+            if (e.target.closest('.control-btn') || e.target.closest('.play-button') || e.target.closest('.page-link')) return;
+            createHeartClick(e);
+        });
+
+        // Initialize
+        createFloatingHearts();
+        setInterval(() => {
+            if (document.getElementById('floatingHearts').children.length < 20) createFloatingHearts();
+        }, 25000);
+    });
+</script>
+</body>
+</html>

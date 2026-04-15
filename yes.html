@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Florence ✿ | Polaroid Gallery of Beautiful Moments</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Quicksand:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Animated gradient background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 30%, rgba(255, 107, 139, 0.15), transparent 60%),
+                        radial-gradient(circle at 80% 70%, rgba(255, 139, 160, 0.1), transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Header */
+        .main-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            animation: fadeInDown 1s ease;
+        }
+
+        .title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.8rem;
+            background: linear-gradient(135deg, #ff8ba0, #ff6b8b, #ffb3c1);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.7);
+            font-style: italic;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .heart-icon {
+            font-size: 2rem;
+            color: #ff6b8b;
+            margin: 0.8rem 0;
+            animation: heartbeat 2s infinite;
+        }
+
+        /* Gallery Grid */
+        .gallery-section {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.2rem;
+            color: #ff8ba0;
+            margin-bottom: 2rem;
+            letter-spacing: 1px;
+        }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 2rem;
+        }
+
+        /* POLAROID STYLE for every card */
+        .polaroid-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 0.7rem 0.7rem 0.9rem 0.7rem;
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(255, 107, 139, 0.4);
+            width: 100%;
+            cursor: pointer;
+            animation: fadeInUp 0.6s ease backwards;
+        }
+
+        .polaroid-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: rgba(255, 107, 139, 0.7);
+            box-shadow: 0 20px 35px rgba(255, 107, 139, 0.3);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .picture-container {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            border-radius: 14px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .polaroid-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .polaroid-card:hover .polaroid-image {
+            transform: scale(1.05);
+        }
+
+        /* Text overlay ON the image - RICH TEXT */
+        .image-text-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            padding: 1.2rem 0.6rem 0.8rem;
+            text-align: center;
+            font-family: 'Dancing Script', cursive;
+            font-size: 1rem;
+            color: #ffd4dc;
+            letter-spacing: 0.5px;
+            font-weight: 500;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+
+        /* Frame text content (below image) */
+        .frame-text-content {
+            margin-top: 0.7rem;
+            padding: 0.4rem 0.3rem;
+            text-align: center;
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        .frame-text-content .line1 {
+            font-size: 0.85rem;
+            color: #ffb3c1;
+            font-family: 'Dancing Script', cursive;
+            letter-spacing: 0.5px;
+        }
+
+        .frame-text-content .line2 {
+            font-size: 0.7rem;
+            color: rgba(255, 200, 210, 0.85);
+            margin-top: 0.2rem;
+            font-style: italic;
+        }
+
+        .frame-text-content .line3 {
+            font-size: 0.65rem;
+            color: rgba(255, 180, 190, 0.7);
+            margin-top: 0.3rem;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .frame-text-content i {
+            color: #ff6b8b;
+            margin: 0 3px;
+            font-size: 0.7rem;
+        }
+
+        /* Show More Button */
+        .show-more-container {
+            text-align: center;
+            margin: 2rem 0 1rem;
+        }
+
+        .show-more-btn {
+            background: linear-gradient(135deg, #ff6b8b, #ff4757);
+            border: none;
+            padding: 0.9rem 2rem;
+            border-radius: 60px;
+            color: white;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            box-shadow: 0 8px 20px rgba(255,107,139,0.3);
+        }
+
+        .show-more-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 28px rgba(255,107,139,0.4);
+        }
+
+        /* Hidden cards (for mobile show more) */
+        .polaroid-card.hidden-card {
+            display: none;
+        }
+
+        /* Message card */
+        .message-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(8px);
+            border-radius: 32px;
+            padding: 2rem;
+            margin: 2.5rem 0;
+            text-align: center;
+            border: 1px solid rgba(255, 107, 139, 0.3);
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .message-card i {
+            font-size: 2rem;
+            color: #ff6b8b;
+            margin-bottom: 1rem;
+        }
+
+        .message-card p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: rgba(255,255,255,0.85);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .person-name {
+            background: linear-gradient(135deg, #ff8ba0, #ff6b8b);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+
+        /* Navigation */
+        .navigation {
+            margin: 2.5rem 0 1.5rem;
+            text-align: center;
+        }
+
+        .next-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            background: linear-gradient(135deg, #ff6b8b, #ff4757);
+            padding: 1rem 2.2rem;
+            border-radius: 60px;
+            text-decoration: none;
+            color: white;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            box-shadow: 0 8px 20px rgba(255,107,139,0.3);
+            margin-bottom: 1.5rem;
+            border: none;
+            cursor: pointer;
+        }
+
+        .next-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 30px rgba(255,107,139,0.4);
+        }
+
+        .page-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .page-link {
+            color: #ff8ba0;
+            text-decoration: none;
+            padding: 0.6rem 1.1rem;
+            background: rgba(255,255,255,0.08);
+            border-radius: 40px;
+            font-weight: 500;
+            transition: all 0.2s;
+            border: 1px solid rgba(255,107,139,0.2);
+            font-size: 0.9rem;
+        }
+
+        .page-link:hover {
+            background: rgba(255,107,139,0.25);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Lightbox */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+        }
+
+        .lightbox.active {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .lightbox-img {
+            max-width: 90%;
+            max-height: 85%;
+            object-fit: contain;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            border: 2px solid rgba(255,107,139,0.5);
+        }
+
+        .close-lightbox {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 2.5rem;
+            color: #ff8ba0;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .close-lightbox:hover {
+            transform: scale(1.1);
+            color: #ff6b8b;
+        }
+
+        .lightbox-caption {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: #ffb3c1;
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.2rem;
+            background: rgba(0,0,0,0.6);
+            padding: 0.5rem;
+            width: fit-content;
+            margin: 0 auto;
+            border-radius: 40px;
+        }
+
+        /* Floating hearts */
+        .floating-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .heart-float {
+            position: absolute;
+            font-size: 1.2rem;
+            animation: floatHeart 18s infinite linear;
+            opacity: 0.25;
+            color: #ff8ba0;
+        }
+
+        footer {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid rgba(255,107,139,0.2);
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.5);
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+
+        @keyframes floatHeart {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            15% { opacity: 0.3; }
+            85% { opacity: 0.3; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 1rem; }
+            .title { font-size: 2.5rem; }
+            .photo-grid { gap: 1.2rem; }
+            .image-text-overlay { font-size: 0.85rem; padding: 0.8rem 0.4rem 0.5rem; }
+            .frame-text-content .line1 { font-size: 0.75rem; }
+            .message-card p { font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="floating-hearts" id="floatingHearts"></div>
+
+<div class="container">
+    <div class="main-header">
+        <h1 class="title">For Florence ✿</h1>
+        <div class="heart-icon">
+            <i class="fas fa-heart"></i>
+        </div>
+        <p class="subtitle">a collection of polaroid memories — each one tells your beauty</p>
+    </div>
+
+    <!-- Gallery Section - ALL pictures have rich overlay text -->
+    <div class="gallery-section">
+        <h2 class="section-title"><i class="fas fa-camera-retro"></i> glimpses of you</h2>
+        <div class="photo-grid" id="photoGrid"></div>
+        
+        <!-- Show More Button (only visible on mobile) -->
+        <div class="show-more-container" id="showMoreContainer" style="display: none;">
+            <button class="show-more-btn" id="showMoreBtn">
+                <i class="fas fa-heart"></i> Show More Memories <i class="fas fa-arrow-down"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Heartfelt message card -->
+    <div class="message-card">
+        <i class="fas fa-feather-alt"></i>
+        <p>Every picture holds a little piece of your light, <span class="person-name">Florence</span>. <br> 
+        The way you smile, the way you shine — it stays with people. <br>
+        <i class="fas fa-heart" style="font-size: 1rem; color:#ff6b8b;"></i> You are truly one of a kind, and deeply loved.</p>
+    </div>
+
+    <!-- Navigation -->
+    <div class="navigation">
+        <!-- <a href="yes.html" class="next-btn">
+            <i class="fas fa-heart"></i> Let the magic in ✨
+        </a> -->
+        <div class="page-links">
+            <a href="index.html" class="page-link"><i class="fas fa-home"></i> Home</a>
+            <a href="music.html" class="page-link"><i class="fas fa-music"></i> Watch me</a>
+            <a href="qualities.html" class="page-link" style="background: rgba(255,107,139,0.2);"><i class="fas fa-heart"></i> Open me</a>
+        </div>
+    </div>
+
+    <footer>
+        <p><span class="person-name">Florence</span> — every moment matters 💕</p>
+    </footer>
+</div>
+
+<!-- Lightbox Modal -->
+<div id="lightbox" class="lightbox">
+    <span class="close-lightbox">&times;</span>
+    <img class="lightbox-img" id="lightboxImg" alt="enlarged view">
+    <div class="lightbox-caption" id="lightboxCaption"></div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Image list from your attachments (all your photos)
+        const imageFiles = [
+            "flo2.jpeg",
+            "flo3.jpeg",
+            "Flo1.jpeg",
+            "flo4.jpeg",
+            "flo5.jpeg",
+            "WhatsApp Image 2026-04-15 at 10.37.23 (1).jpeg",
+            "flo6.jpeg",
+            "flo7.jpeg"
+        ];
+        
+        // RICH OVERLAY TEXTS on each image (beautiful, romantic, meaningful)
+        const overlayTexts = [
+            "✨ you are pure magic, Florence ✨",
+            "🌸 beauty that never fades — inside and out 🌸",
+            "💖 a soul full of light and endless grace 💖",
+            "🌙 softly unforgettable, deeply cherished 🌙",
+            "💕 every glance of yours tells a beautiful story 💕",
+            "🌷 like a gentle dream that came true 🌷",
+            "🌟 you shine so bright, the stars are jealous 🌟",
+            "💗 absolutely lovely, wonderfully made 💗"
+        ];
+        
+        // Frame text lines for each image (more text below)
+        const frameLines = [
+            { line1: "U make ordinary days feel brighter", line2: "You listen with ur whole heart, show up when it matters, and making people feel seen and valued", line3: "U not just a good friend — U a rare one." },
+            { line1: "A heart of gold, a soul of art", line2: "you make ordinary moments feel extraordinary", line3: "so grateful you exist" },
+            { line1: "radiant, real, remarkable", line2: "your presence is a gift to everyone around you", line3: "never forget how special you are" },
+            { line1: "gentle strength, quiet magic", line2: "the world is softer because you're in it", line3: "you leave footprints on hearts" },
+            { line1: "unforgettable grace", line2: "you carry beauty in everything you do", line3: "truly one of a kind" },
+            { line1: "a beautiful soul", line2: "your laughter echoes like a melody", line3: "so lucky to know you" },
+            { line1: "pure elegance", line2: "you make the world a little brighter", line3: "keep shining, beautiful" },
+            { line1: "endlessly amazing", line2: "every version of you is wonderful", line3: "cherish yourself the way we cherish you" }
+        ];
+        
+        const galleryGrid = document.getElementById('photoGrid');
+        let allCards = [];
+        let isExpanded = false;
+        
+        function createPolaroidCard(imageSrc, overlayText, frameData, index) {
+            const card = document.createElement('div');
+            card.className = 'polaroid-card';
+            card.setAttribute('data-index', index);
+            
+            // Picture container with image and overlay
+            const pictureContainer = document.createElement('div');
+            pictureContainer.className = 'picture-container';
+            
+            const img = document.createElement('img');
+            img.src = imageSrc;
+            img.alt = `Florence moment ${index+1}`;
+            img.className = 'polaroid-image';
+            img.loading = 'lazy';
+            
+            // Handle image loading errors with beautiful fallback
+            img.onerror = function() {
+                this.src = `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Crect width='200' height='200' fill='%23ffd9df'/%3E%3Ccircle cx='100' cy='85' r='40' fill='%23ffb3c1'/%3E%3Ctext x='100' y='120' font-size='16' text-anchor='middle' fill='%23a13e4e' font-family='Dancing Script'%3E🌸 lovely 🌸%3C/text%3E%3C/svg%3E`;
+                this.style.objectFit = 'cover';
+            };
+            
+            // Image overlay text - RICH AND BEAUTIFUL
+            const overlay = document.createElement('div');
+            overlay.className = 'image-text-overlay';
+            overlay.innerHTML = `<i class="fas fa-heart" style="font-size:0.7rem;"></i> ${overlayText} <i class="fas fa-heart" style="font-size:0.7rem;"></i>`;
+            
+            pictureContainer.appendChild(img);
+            pictureContainer.appendChild(overlay);
+            
+            // Frame text content (below image)
+            const frameContent = document.createElement('div');
+            frameContent.className = 'frame-text-content';
+            frameContent.innerHTML = `
+                <div class="line1">
+                    <i class="fas fa-heart"></i> ${frameData.line1} <i class="fas fa-heart"></i>
+                </div>
+                <div class="line2">
+                    "${frameData.line2}"
+                </div>
+                <div class="line3">
+                    <i class="fas fa-feather-alt"></i> ${frameData.line3} <i class="fas fa-feather-alt"></i>
+                </div>
+                <div class="line3" style="margin-top: 0.2rem;">
+                    🌸 gentle soul, unforgettable grace 🌸
+                </div>
+            `;
+            
+            card.appendChild(pictureContainer);
+            card.appendChild(frameContent);
+            
+            // Click to open lightbox
+            card.addEventListener('click', (e) => {
+                e.stopPropagation();
+                openLightbox(img.src, overlayText);
+            });
+            
+            return card;
+        }
+        
+        // Lightbox functions
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightboxImg');
+        const lightboxCaption = document.getElementById('lightboxCaption');
+        const closeLightbox = document.querySelector('.close-lightbox');
+        
+        function openLightbox(imgSrc, captionText) {
+            lightboxImg.src = imgSrc;
+            lightboxCaption.textContent = captionText || 'beautiful moment ✨';
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeLightboxFunc() {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox || e.target === closeLightbox) {
+                closeLightboxFunc();
+            }
+        });
+        
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+                closeLightboxFunc();
+            }
+        });
+        
+        // Load all polaroid cards
+        function loadGallery() {
+            galleryGrid.innerHTML = '';
+            allCards = [];
+            
+            imageFiles.forEach((filename, index) => {
+                const overlayText = overlayTexts[index % overlayTexts.length];
+                const frameData = frameLines[index % frameLines.length];
+                const card = createPolaroidCard(filename, overlayText, frameData, index);
+                allCards.push(card);
+                galleryGrid.appendChild(card);
+            });
+            
+            // Apply mobile restrictions based on screen size
+            checkScreenAndApply();
+        }
+        
+        // Check screen width and show/hide cards + show more button
+        function checkScreenAndApply() {
+            const isMobile = window.innerWidth <= 768;
+            const showMoreContainer = document.getElementById('showMoreContainer');
+            
+            if (isMobile && !isExpanded) {
+                // On mobile: hide cards after index 2 (first 3 visible)
+                allCards.forEach((card, idx) => {
+                    if (idx >= 3) {
+                        card.classList.add('hidden-card');
+                    } else {
+                        card.classList.remove('hidden-card');
+                    }
+                });
+                showMoreContainer.style.display = 'block';
+            } else if (isMobile && isExpanded) {
+                // On mobile but expanded: show all
+                allCards.forEach(card => {
+                    card.classList.remove('hidden-card');
+                });
+                showMoreContainer.style.display = 'block';
+                // Change button text
+                const btn = document.getElementById('showMoreBtn');
+                if (btn) btn.innerHTML = '<i class="fas fa-heart"></i> Show Less <i class="fas fa-arrow-up"></i>';
+            } else {
+                // Desktop: show all, hide button
+                allCards.forEach(card => {
+                    card.classList.remove('hidden-card');
+                });
+                showMoreContainer.style.display = 'none';
+            }
+        }
+        
+        // Show More / Show Less functionality
+        function setupShowMore() {
+            const showMoreBtn = document.getElementById('showMoreBtn');
+            if (!showMoreBtn) return;
+            
+            showMoreBtn.addEventListener('click', function() {
+                const isMobile = window.innerWidth <= 768;
+                if (!isMobile) return;
+                
+                isExpanded = !isExpanded;
+                
+                if (isExpanded) {
+                    // Show all cards
+                    allCards.forEach(card => {
+                        card.classList.remove('hidden-card');
+                    });
+                    showMoreBtn.innerHTML = '<i class="fas fa-heart"></i> Show Less <i class="fas fa-arrow-up"></i>';
+                    
+                    // Scroll smoothly to show new content
+                    setTimeout(() => {
+                        const lastCard = allCards[allCards.length - 1];
+                        if (lastCard) {
+                            lastCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                        }
+                    }, 100);
+                } else {
+                    // Hide cards after index 2
+                    allCards.forEach((card, idx) => {
+                        if (idx >= 3) {
+                            card.classList.add('hidden-card');
+                        }
+                    });
+                    showMoreBtn.innerHTML = '<i class="fas fa-heart"></i> Show More Memories <i class="fas fa-arrow-down"></i>';
+                    
+                    // Scroll back to gallery
+                    const gallerySection = document.querySelector('.gallery-section');
+                    if (gallerySection) {
+                        gallerySection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }
+            });
+        }
+        
+        // Floating hearts background
+        function createFloatingHearts() {
+            const container = document.getElementById('floatingHearts');
+            const icons = ['❤️', '💖', '💗', '🌸', '🌹', '✨', '💕', '🌷'];
+            for (let i = 0; i < 35; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart-float';
+                heart.innerHTML = icons[Math.floor(Math.random() * icons.length)];
+                heart.style.left = `${Math.random() * 100}%`;
+                heart.style.fontSize = `${0.8 + Math.random() * 1.2}rem`;
+                heart.style.animationDuration = `${12 + Math.random() * 20}s`;
+                heart.style.animationDelay = `${Math.random() * 12}s`;
+                heart.style.opacity = `${0.15 + Math.random() * 0.25}`;
+                container.appendChild(heart);
+                
+                setTimeout(() => {
+                    if (heart.parentNode) heart.remove();
+                }, 28000);
+            }
+        }
+        
+        // Set name to Florence everywhere
+        document.querySelectorAll('.person-name').forEach(el => {
+            el.textContent = 'Florence';
+        });
+        
+        // Initialize
+        loadGallery();
+        setupShowMore();
+        createFloatingHearts();
+        
+        // Listen for window resize to adjust layout
+        window.addEventListener('resize', function() {
+            // Reset expansion state on resize to avoid weirdness
+            const wasMobile = window.innerWidth <= 768;
+            const isMobile = window.innerWidth <= 768;
+            
+            if (!wasMobile && isMobile) {
+                // Switching to mobile - reset expansion
+                isExpanded = false;
+                checkScreenAndApply();
+                const btn = document.getElementById('showMoreBtn');
+                if (btn) btn.innerHTML = '<i class="fas fa-heart"></i> Show More Memories <i class="fas fa-arrow-down"></i>';
+            } else if (wasMobile && !isMobile) {
+                // Switching to desktop
+                isExpanded = false;
+                checkScreenAndApply();
+            } else {
+                // Same device type, just reapply
+                checkScreenAndApply();
+            }
+        });
+        
+        setInterval(() => {
+            const container = document.getElementById('floatingHearts');
+            if (container.children.length < 25) {
+                createFloatingHearts();
+            }
+        }, 20000);
+        
+        // Gentle click effect for extra love
+        document.body.addEventListener('click', function(e) {
+            if (e.target.closest('.polaroid-card') || e.target.closest('.next-btn') || e.target.closest('.page-link') || e.target.closest('.show-more-btn')) return;
+            const heartPop = document.createElement('div');
+            heartPop.innerHTML = '💕';
+            heartPop.style.position = 'fixed';
+            heartPop.style.left = `${e.clientX}px`;
+            heartPop.style.top = `${e.clientY}px`;
+            heartPop.style.fontSize = '1.2rem';
+            heartPop.style.pointerEvents = 'none';
+            heartPop.style.zIndex = '9999';
+            heartPop.style.opacity = '0.6';
+            heartPop.style.transition = 'transform 1s ease, opacity 1s';
+            heartPop.style.transform = 'translateY(-25px) scale(1.1)';
+            document.body.appendChild(heartPop);
+            setTimeout(() => {
+                heartPop.style.opacity = '0';
+                setTimeout(() => heartPop.remove(), 900);
+            }, 50);
+        });
+    });
+</script>
+</body>
+</html>
